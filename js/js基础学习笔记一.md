@@ -37,5 +37,19 @@ Browser Object Model 的简称，开发人员使用BOM可以控制浏览器显�
 - 对cookie的支持
 - 想XMLHttpRequest 和 IE 的ActiveXObject 这样的自定义对象
 
+## 在html中使用javascript
+
+### <script> 元素
+script有两种使用方法：直接在页面中嵌入javascript代码和包含外部javascript文件
+
+script元素的六个属性
+- async：可选。表示应该立即下载脚本，但是不应妨碍页面的其他操作，比如下载其他资源或者等待加载其他脚本，只对外部脚本文件有效
+- charset：可选。表示通过指定src属性至指定的代码的字符集。大多浏览器会忽略，因此这个属性很少用
+- defer： 可选。表示脚本可以延迟到文档完全被解析和显示之后在执行。只对外部脚本有效。IE7及更早版本对嵌入脚本也支持。
+- src: 可选。表示包含要执行代码的外部文件。
+- type：可选。可以看成是language（已废弃）的替代属性。表示编写代码使用的是脚本语言的内容类型（也称为MIME类型）
+
+## 基本概念
+
 
 
