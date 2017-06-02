@@ -25,8 +25,24 @@ function scopeTest(){
 }
 scopeTest(); //undefined
 ```
->_ 注意，如果忘记var，那么变量就被声明为全局变量了。
+> 注意，如果忘记var，那么变量就被声明为全局变量了。在javascript中变量的作用范围是函数级的，即在函数中所有的变量在整个函数中都有定义，声明提前、全局变量优先级低于局部变量，根据这两条规则就不难理解为什么输出undefined了。
 
 ### 什么是闭包
-闭包是一些表达式，通常是函数，它可以使用特定作用域中的变量，建安点儿说就是，当内层函数应用一个外层函数中的变量时就形成了闭包。
+闭包是一些表达式，通常是函数，它可以使用特定作用域中的变量，简单点儿说就是，当内层函数应用一个外层函数中的变量时就形成了闭包。
 
+```
+function createClosure(){
+    var name = "jack";
+    return {
+        setStr:function(){
+            name = "rose";
+        },
+        getStr:function(){
+            return name + ":hello";
+        }
+    }
+}
+var builder = new createClosure();
+builder.setStr();
+console.log(builder.getStr()); //rose:hello
+```
