@@ -55,10 +55,49 @@ script元素的六个属性
 - ECMAScript的变量是松散类型的。所谓松散类型就是可以用来保存任何类型的数据。使用var操作符定义的变量将成为定义改变两的作用域中的局部变量。这个变量在函数退出后就会被销毁。
 - typeof 操作符， 用来检测给定变量的数据类型，**需要注意的是它是一个操作符，不是函数**
 
+| 操作数        | typeof             |
+| ------------- |:------------------:|
+| undefined     |'undefined'         |
+| null          |**object**          |
+| 布尔值        |boolean             |
+| 数字          |number              |
+| 字符串        |string              |
+| 函数          |function            |
+| 其他的常规值  |object              |
+| 引擎创建的值  |可能返回任意的字符串|
+
+
+
 ### 基本数据类型
 - Undefined 表示为初始化，需要注意的是包含undefind值的变量和上位定义的变量还是不一样的
 - Nulll 从逻辑角度来看，null值表示一个空指针对象。 **typeof 检测返回 object**
+> null返回的是一个object,所以判断一个value是不是一个对象应该按照一下条件
+```
+function isObject (value) {
+  return ( value !== null 
+    && (typeof value === 'object' 
+    || typeof value === 'function'));
+}
+```
 - Bollean 区分大小写，字面值只有：true和false。true、非空字符串、非零数字（包括无穷大）、任何对象都是true
+
+值 |转换成BOOL值
+----------------|----------------------------------
+undefined | false
+null | false
+BOOL | 与输入值相同
+数字 | 0，NaN 转换成false，其他的都为 true
+字符串 | ' '转换成false，其他字符串都转换成true
+对象 | 全为true
+
+
 - Number 表示整数和浮点数，NaN是一个特殊的数值（NaN与任何值都不相等，包括自身）
 - String ECMAScript中的字符串是不可变的，要更改某个变量保存的字符串，首先要销毁原来的字符串。然后在用另一个包含新值的字符串赋值给改该变量
-- Object 一组数据和功能的集合
+- Object 一组数据和功能的集合。Object的每个实例都具有下列属性和方法：
+  - constructor：保留这用于常见当前对象的函数（构造函数）
+  - hasOwnPropertyp(propertypname): 用于检测给定的属性在当前对象实例中是否存在
+  - isPrototypeOf(object)：用于检测传入的对象是否是传入对象的原型
+  - propertypIsEnumerable(propertypname)：用于检测给定的属性是否能够使用
+  - toLocaleString()：返回对象的字符串。该字符串与执行环境的地区对应
+  - toString()：返回对象的字符串
+  - valueOf()：返回对象的字符串、数值、或布尔值，通常和toString方法的返回值相同
