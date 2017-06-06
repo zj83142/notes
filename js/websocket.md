@@ -45,18 +45,18 @@ WebSocket 对象作为一个构造函数，用于新建 WebSocket 实例。
 执行上面语句之后，客户端就会与服务器进行连接。
 
 websocket实例对象的属性值和方法
-Attribute | Type | Description
-----------|------|-----------------------------------------------------------------------------------------------------------
-binaryType | DOMString | A string indicating the type of binary data being transmitted by the connection. This should be either "blob" if DOM Blob objects are being used or "arraybuffer" if ArrayBuffer objects are being used.
-bufferedAmount | unsigned long | The number of bytes of data that have been queued using calls to send() but not yet transmitted to the network. This value resets to zero once all queued data has been sent. This value does not reset to zero when the connection is closed; if you keep calling send(), this will continue to climb. Read only
-extensions | DOMString | The extensions selected by the server. This is currently only the empty string or a list of extensions as negotiated by the connection.
-onclose | EventListener | An event listener to be called when the WebSocket connection's readyState changes to CLOSED. The listener receives a CloseEvent named "close".
-onerror | EventListener | An event listener to be called when an error occurs. This is a simple event named "error".
-onmessage | EventListener | An event listener to be called when a message is received from the server. The listener receives a MessageEvent named "message".
-onopen | EventListener | An event listener to be called when the WebSocket connection's readyState changes to OPEN; this indicates that the connection is ready to send and receive data. The event is a simple one with the name "open".
-protocol | DOMString | A string indicating the name of the sub-protocol the server selected; this will be one of the strings specified in the protocols parameter when creating the WebSocket object.
-readyState | unsigned short | The current state of the connection; this is one of the Ready state constants. Read only.
-url | DOMString | The URL as resolved by the constructor. This is always an absolute URL. Read only.
+|Attribute | Type | Description|
+|----------|------|-----------------------------------------------------------------------------------------------------------|
+|binaryType | DOMString | A string indicating the type of binary data being transmitted by the connection. This should be either "blob" if DOM Blob objects are being used or "arraybuffer" if ArrayBuffer objects are being used.|
+|bufferedAmount | unsigned long | The number of bytes of data that have been queued using calls to send() but not yet transmitted to the network. This value resets to zero once all queued data has been sent. This value does not reset to zero when the connection is closed; if you keep calling send(), this will continue to climb. Read only|
+|extensions | DOMString | The extensions selected by the server. This is currently only the empty string or a list of extensions as negotiated by the connection.|
+|onclose | EventListener | An event listener to be called when the WebSocket connection's readyState changes to CLOSED. The listener receives a CloseEvent named "close". |
+|onerror | EventListener | An event listener to be called when an error occurs. This is a simple event named "error".
+|onmessage | EventListener | An event listener to be called when a message is received from the server. The listener receives a MessageEvent named "message".|
+|onopen | EventListener | An event listener to be called when the WebSocket connection's readyState changes to OPEN; this indicates that the connection is ready to send and receive data. The event is a simple one with the name "open".|
+|protocol | DOMString | A string indicating the name of the sub-protocol the server selected; this will be one of the strings specified in the protocols parameter when creating the WebSocket object.|
+|readyState | unsigned short | The current state of the connection; this is one of the Ready state constants. Read only.|
+|url | DOMString | The URL as resolved by the constructor. This is always an absolute URL. Read only.|
 
 #### webSocket.readyState
 
