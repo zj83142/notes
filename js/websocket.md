@@ -44,9 +44,10 @@ WebSocket 对象作为一个构造函数，用于新建 WebSocket 实例。
 
 执行上面语句之后，客户端就会与服务器进行连接。
 
-websocket实例对象的属性值和方法
+#### websocket实例对象的属性值和方法
+
 |Attribute | Type | Description|
-|----------|------|-----------------------------------------------------------------------------------------------------------|
+|----------|------|------------------------------------------------------------------|
 |binaryType | DOMString | A string indicating the type of binary data being transmitted by the connection. This should be either "blob" if DOM Blob objects are being used or "arraybuffer" if ArrayBuffer objects are being used.|
 |bufferedAmount | unsigned long | The number of bytes of data that have been queued using calls to send() but not yet transmitted to the network. This value resets to zero once all queued data has been sent. This value does not reset to zero when the connection is closed; if you keep calling send(), this will continue to climb. Read only|
 |extensions | DOMString | The extensions selected by the server. This is currently only the empty string or a list of extensions as negotiated by the connection.|
