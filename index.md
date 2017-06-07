@@ -5,6 +5,9 @@
 - [git 小技巧](./skills/git小技巧.md)
 - [Markdown-语法手册](http://blog.leanote.com/post/freewalk/Markdown-%E8%AF%AD%E6%B3%95%E6%89%8B%E5%86%8C)
 
+### 踩坑
+- [echarts 使用过程遇到的一些问题](./pits/echarts遇到的一些坑.md)
+
 
 ### js知识点汇总
 - [js作用域和闭包](./js/js作用域和闭包.md)
