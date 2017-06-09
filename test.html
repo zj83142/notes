@@ -11,27 +11,37 @@
 <button>5</button>
 <script type="text/javascript">
   
+  function load(){
+    var arr = document.getElementsByTagName("button");
+    for(var i = 0; i < arr.length; i++){
+      arr[i].onclick = (function (index) {
+        return function () {
+            alert('第' + (index + 1) + '个按钮');
+        }
+      })(i);
+    }
+  };
+
   // function load(){
   //   var arr = document.getElementsByTagName("button");
-  //   for(var i = 0; i < arr.length; i++){
-  //     arr[i].onclick = (function () {
-  //       var temp = i;
-  //       return function () {
-  //           alert('第' + (temp + 1) + '个按钮');
-  //       }
-  //     })();
+  //   for(let i = 0; i < arr.length; i++){
+  //     arr[i].onclick = function () {
+  //       alert('第' + (i + 1) + '个按钮');
+  //     };
   //   }
   // };
 
-  function load(){
-    var arr = document.getElementsByTagName("button");
-    for(let i = 0; i < arr.length; i++){
-      arr[i].onclick = function () {
-        alert('第' + (i + 1) + '个按钮');
-      };
-    }
-  };
-  
+var value = 1;
+function bar() {
+  var value = 2;
+  function foo() {
+    console.log(value);
+  }
+  foo();
+}
+bar();
+
+
 </script>
 </body>
 </html>
