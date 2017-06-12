@@ -294,6 +294,82 @@ var s1 = 'some text';
 s1.color = 'red';
 console.log(s1.color); // undefined
 ```
+1. Boolean 类型
+  用处不大，容易引起误解，如：
+  ```
+  var falseObj = new Boolean(false);
+  var result = falseObj && true; // true , 布尔表达式中的所有对象都会被转换为true
+  ```
+  基本类型和引用类型的布尔值还有两个区别：typeof 对基本类型返回boolean，对引用类型返回object。 使用instanceof 测试boolean对象返回true， 测试基本类型的布尔值返回false.
 
+2. Number 类型
+  var numberObj = new Number(10);
 
+  - toString()方法
+    ```
+    var num = 10；
+    num.toString(); // 10
+    num.toString(2); // 1010
+    num.toString(8); // 12
+    num.toString(10); // 10
+    num.toString(16); // a
+    ```
+  - toFixed 数字格式化为字符串
+    ```
+    var num = 10;
+    num.toFixed(2); // 10.00  可以自动四舍五入，但是需要注意，不同的浏览器舍入规则可能会有所不同
+    ```
+
+3. String 类型
+  String 对象的方法也可以在所有基本的字符串值中访问到。String类型的每个实例都有一个length属性。表示字符串中包含多少个字符。
+
+  - 字符方法 charAt(index) 和 charCodeAt(index) 
+  - 字符串操作方法 concat() 用于将一个或多个字符串拼接起来。返回拼接的得到的新字符串
+  - slice()、substr()、substring()
+  - 字符串的位置方法 indexOf()、lastIndexOf()
+  - trim() 删除前缀或后置的空格，返回字符串副本
+  - 字符串大小写转换方法 toLowerCase()、toLocaleLowerCase()、toUpperCase()、toLocaleUpperCase()
+  - 字符串的模式匹配方法 match()、search()、replace()
+  - split() 基于制定的分隔符将以给字符串分割成多个自字符串，并将结果放在一个数组中。
+  - localeCompare() 
+  - fromCharCode() 接收一或多个字符编码，然后将他们转化成一个字符串。
+
+### 单体内置对象
+
+由ECMAScript实现提供的、不依赖于宿主环境的对象，这些对象在ECMAScript程序执行之前就已经存在了。如 Object、Array、String 和Global、Math
+
+#### Global对象
+
+- URI编码方法 Global对象的encodeURI() 和 encodeURIComponent() 可以对URI进行编码，以便于发送给浏览器。有效的URI中不能包含某些字符，如空格。
+- eval() 就像是一个完整的ECMAScript解析器。他只接受一个参数。当解析器发现代码中调用eval()时， 它会将传入的参数当作实际的ECMAScript语句来解析。然后把执行结果插入到原位置。在eval() 定义的任何变量或函数都不会被提升。
+
+global对象的属性
+
+特殊的值undefined、NaN以及Infinity 都是Global对象的属性。此外所有原生引用类型的构造函数。像Object和Function也都是Global对象的属性
+
+#### window对象 
+在全局作用域中声明的所有变量和函数，都会成为了window对象的属性，虽然ECMAScript没有指出如何直接访问Global对象，但是web浏览都是将这个全局对象作为window对象的一部分加以实现的。
+
+#### Math对象 
+保存数序公式和信息提供了一个公共位置
+
+  - Math对象的属性
+
+    属性 | 说明
+    ------|---------------
+    Math.E | 自然对数的底数，即常量e的值
+    Math.LN10 | 10的自然对数
+    Math.LN2 | 2的自然对数
+    Math.LOG2E | 以2为底的对数
+    Math.LOG10E | 以10为底的对数
+    Math.PI | π的值
+    Math.SQRT_2 | 1/2的平方根
+    Math.SQRT2 | 2的平方根
+
+  - min() 和 max() 确定一组数值中的最大值和最小值
+  - 舍入方法
+    - Math.ceil() 执行向上舍入
+    - Math.floor() 执行向下舍入
+    - Math.round() 执行标准舍入
+  - random() 返回大于0 小于1的一个随机数
 
