@@ -26,7 +26,6 @@ var person = {
 }
 
 ```
-
 #### 属性类型
 
 ECMAScript 中有两种属性： 数据属性和访问器属性
@@ -70,7 +69,6 @@ ECMAScript 中有两种属性： 数据属性和访问器属性
   book.year = 2017;
   alert(book.edition);
   ```
-
 #### 定义多个属性
   Object.defineProperties() 可以通过描述符一次定义多个属性。这个方法接收两个对象参数：第一个对象是要添加和修改 其属性的对象。第二个参数与第一个对象中添加或修改的属性一一对应：
   ```
@@ -102,4 +100,72 @@ ECMAScript 中有两种属性： 数据属性和访问器属性
 Object.getOwnPropertyDescriptor() 可以取得给定属性的描述符，接收两个参数： 属性所在的对象和要读取其描述符的属性名称，返回一个对象，如果是访问器属性，这个对象属性有configurable、enumerable、get和set。如果是数据属性，这个对象的属性有configurable、enumerable、writable和value
 
 ### 创建对象
+虽然Object构造函数或对象字面量都可以用来创建单个对象，但是这些方法有个明显的缺点：使用同一个接口创建很多对象，会产生大量的重复代码，为了解决这个问题，人们开始使用工厂模式的一种变体。
 
+#### 1. 工厂模式
+工厂模式抽象了创建具体对象的过程。用一种函数来封装以特定接口创建对象的细节
+```
+function createPerson(name, age, job) {
+  var o = new Object();
+  o.name = name;
+  o.age = age;
+  o.job = job;
+  o.sayName = function() {
+    alert(this.name);
+  }
+  return o;
+}
+var person1 = createPerson('zhangsan', 22, 'software engineer');
+var person2 = createPerson('lisi', 29, 'doctor');
+```
+工厂模式虽然解决了创建多个相似对象的问题，但是没有解决对象识别问题。
+
+#### 2. 构造函数模式
+ECMAScript 中的构造函数可以用来创建特定类型的对象。像Object和Array这样的原生构造函数，在运行时会自动出现在执行环境中。此外，也可以创建自定义的构造函数，从而定义自定义对象类型的属性和方法。
+```
+function Person(name, age, job) {
+  this.name = name;
+  this.age = age;
+  this.job = job;
+  this.sayName = function() {
+    alert(this.name);
+  }
+}
+var person1 = new Person('zhangsan', 22, 'software engineer');
+var person2 = new Person('lisi', 29, 'doctor');
+```
+与工厂模式中的不同之处：
+- 没有显式的创建对象
+- 直接将属性和方法复制给了this对象
+- 没有return语句
+- 函数名使用的是大写。按照管理构造函数始终都应该以一个大写字母开头，而非构造函数则用小写开头。
+
+> 构造函数本身也是函数，只不过可以用来创建对象。
+
+要创建Person实例，必须使用new操作符，过程：
+  1. 创建一个对象
+  2. 将构造函数的作用域赋给新对象（因此this就执行了这个新对象）
+  3. 执行构造函数中的代码（为这个新对象添加属性）
+  4. 返回新对象
+在前面的例子person1 和person2分别保存着Person的一个不同实例。这两个对象都有一个constructor（构造函数）属性，该属性指向Person
+  alert(person1.constructor == Person); // true
+对象的constructor属性最初是用来表示对象类型的。但是，提到监测对象类型。还是instranceof操作符要更可靠一些。
+创建自定义的构造函数意味着将来可以将他的实例标识为一种特定的类型。而这正是构造函数模式胜过工厂模式 的地方。
+
+1. 将构造函数当作函数
+构造函数和其他函数的唯一区别，在于调用他们的方式不同。任何函数只要通过new操作符来调用，那么它就可以作为构造函数，任何函数，如果不通过new操作符来调用，那么它跟普通函数也不会有什么区别。
+```
+// 当作构造函数使用
+var person = new Person('zhangsan', 22, 'software engineer');
+person.sayName(); // zhangsan
+// 作为普通函数调用
+Person('lisi', 22, 'software engineer');
+window.sayName(); // lisi  用这种方式定义的构造函数是定义在Global对象中的（在浏览器中就是window对象）
+// 在另一个对象的作用于中调用
+var o = new Object();
+Person.call(o, 'wangwu', 30, 'nurse');
+o.sayName(); // wangwu
+
+```
+
+2. 构造函数的问题
