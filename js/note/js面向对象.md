@@ -169,3 +169,54 @@ o.sayName(); // wangwu
 ```
 
 2. 构造函数的问题
+
+
+
+
+
+
+### 原型模式
+每个函数都有一个prototype属性，这个属性是一个指针，指向一个对象，而这个对象的用途是包含可以有特定类型的所有实例共享的属性和方法，那么prototype就是通过调用构造函数而创建的那个对象向实例的原型对象。
+使用原型对象的好处是可以让所有对象实例共享它所包含的属性和方法。 也就是说，不必构造函数中定义对象实例，而是可以将这些信息直接添加到原型对象中。
+```
+function Person() {}
+Person.prototype.name = "zhangsan";
+Person.prototype.age = 20;
+Person.prototype.job = "software engineer";
+Person.prototype.sayName = function() {
+  alert(this.name);
+}
+var person = new Person();
+person.sayName(); // zhangsan
+var person2 = new Person();
+person2.sayName(); // zhangsan
+alert(person1.sayName == person2.sayName); // true
+```
+他原型对象与构造函数不同的是，新对象的这些属性和方法是有所有实例共享的的。
+
+1. 理解原型对象
+无论什么时候，只要创建了一个新函数，就会根据一组特定的规则为该函数创建一个prototype属性，这个属性指向函数的原型对象。在默认情况下，所有原型对象都会自动获得一个constructor（构造函数）属性，这个属性是一个指向prototype属性所在函数的指针。
+
+![](../../imgs/js/js_prototype.png)
+
+每当代码读取某个对象的某个属性时，都会执行一次搜索，目标是具有给定名字的属性。搜过首先从对象实例本身开始，如果在失利中找到了具有给定名字的属性，则返回该属性的值，如果没有找到。则继续搜索指针执行的原型对象，如果在原型对象中找到了这个属性，则返回该属性值。
+原型最初值包含constructor属性，而该属性也是共享的，因此可以通过对象实例访问。
+
+虽然可以通过对象实例访问保存在原型中的值，但却不能通过对象实例重写对象中的值。如果我们在实例中添加了一个属性，而该属性与原型中的一个属性同名。那我们就在实例中创建了该属性，该属性将会屏蔽原型中的那个属性。
+```
+function Person(){}
+Person.prototype.name = "zhangsan";
+Person.prototype.age = 20;
+Person.prototype.job = "software engineer";
+Person.prototype.sayName = function() {
+  alert(this.name);
+}
+var person1 = new Person();
+var person2 = new Person();
+person1.name = 'lisi';
+alert(person1.name); // list
+alert(person2.name); //zhangsan
+
+delete person1.name;  // 删除实例对象中的name属性，返回原型对象中的name属性
+alert(person1.name); // zhangsan
+```
