@@ -19,6 +19,7 @@
 - [js变量、作用域和内存问题](./js/note/js变量-作用域和内存问题.md)
 - [js应用类型](./js/note/js引用类型.md)
 - [js面向对象 - 创建对象](./js/note/js面向对象-创建对象.md)
+- [js面向对象 - 继承](./js/note/js面向对象-继承.md)
 
 ### 好的学习链接
 - [前端开发者指南（2017）](https://www.gitbook.com/book/sqrtthree/front-end-handbook-2017/details)
