@@ -1,4 +1,4 @@
-## js 面向对象
+## js 面向对象 —— 创建对象
 
 面向对象（Object-oriented，OO）的语言有一个标志，那就是他们都有类的概念。可以通过类创建任意多个具有相同属性和方法的对象。
 
@@ -228,4 +228,198 @@ alert(person2.name); //zhangsan
 
 delete person1.name;  // 删除实例对象中的name属性，返回原型对象中的name属性
 alert(person1.name); // zhangsan
+```
+
+hasOwnPrototype() 检测一个属性是存在于实例中，还是存在于圆形中，这个方法是从Object继承来的，只在给定属性存在于对象实例时，才会返回true。
+
+Object.getOwnPropertyDescriptor() 只能获取实例属性，要获取圆形属性描述符，必须则直接在原型对象上调用Object.getOwnPropertyDescriptor()
+
+#### 原型与in操作符
+
+使用方法：
+- 单独使用， in操作符会在通过对象能够访问给给定属性时返回true，无论该属性存在实例中或者原型中。
+  ```
+  function Person(){}
+  Person.prototype.name = "zhangsan";
+  Person.prototype.age = 20;
+  Person.prototype.job = "software engineer";
+  Person.prototype.sayName = function() {
+    alert(this.name);
+  }
+  var person1 = new Person();
+  var person2 = new Person();
+
+  person1.hasOwnProperty('name'); // false
+  console.log('name' in person1); // true
+
+  person1.mame = 'lisi';
+  person1.hasOwnProperty('name'); // true
+  console.log('name' in person1); // true
+
+  delete person1.mame;
+  person1.hasOwnProperty('name'); // true
+  console.log('name' in person1); // true
+
+  // 判断属性是存在于对象还是原型：
+  function hasPrototypeProperty(object, name) {
+    return !object.hasPwnProperty(name) && (name in object);
+  }
+  ```
+- 在for-in循环中使用
+  在使用for-in循环时，返回的是所有能够通过对象访问的、可枚举的（enumerable）属性，其中既包括存在于实例中的属性。也包括存在于原型中的属性。屏蔽了原型中不可枚举属性（将[[Enumerable]]标记为false属性）的实力属性也会在for-in循环中返回，**因为根据规定，所有开发人员定义的属性都是可枚举的，只有IE8及更早版本中例外**
+```
+var o = {
+  toString: function() {
+    return 'my object';
+  }
+};
+for(var prop in o) {
+  if(prop == 'toString') {
+    alert('found toString'); // 在IE中不会显示
+  }
+}
+```
+> 要获取对象上所有可枚举的实例属性，可以使用ECMAScript 5 的Object.keys() 如： Object.keys(Person.prototype);  或person1.keys();
+
+#### 更简单的原型语法
+```
+function Person() {}
+Person.prototype = {
+  name: 'zhangsan',
+  age: 20,
+  job: 'software engineer',
+  sayName: function() {
+    alert(this.name);
+  }
+}
+```
+对象字面量的方式创建Person.prototype, 最终结果相同，但是constructor属性不再指向Person了。这种写法本质上完全重写了默认的prototype对象，因此constructor属性也就变成了新对象的constructor属性（指向Object构造函数），因此通过instanceof操作符任然返回正确对象，但是通过constructor以及无法确定对象类型了 person1.constructor == Person; 返回false
+解决方法：
+```
+function Person() {}
+Person.prototype = {
+  constructor: Person, // 设置constructor， 这样会导致constructor属性的[[Enumerable]]特性被设置为true，原生的constructor属性是不可枚举的。
+  name: 'zhangsan',
+  age: 20,
+  job: 'software engineer',
+  sayName: function() {
+    alert(this.name);
+  }
+}
+```
+#### 原型的动态性
+由于在原型中查找值的过程是一次搜索，因此我们对原型对象所做的任何修改都能够立即从实例上反映出来——即使是县创建了实例后修改原型也是可以的。
+```
+var person = new Person();
+Person.prototype.sayHi = function() {
+  alert('hi');
+}
+person.sayHi(); // hi 没问题
+```
+其原因可以归结为实例与原型之间的松散连接关系。实例和原型之间的连接不过是一个指针，而非一个副本。
+
+尽管可以随时为原型添加属性和方法，但是如果是重写整个原型对象，那么情况就不一样了。调用构造函数时会为实例添加一个指向最初原型的[[Prototype]]指针，而把原型修改为另外一个对象就等于切断了构造函数与最初原型之间的联系。 记住： 实例中的指针仅指向原型，而不指向构造函数。
+```
+function Person() {}
+
+var person1 = new Person();
+
+Person.prototype = {
+  constructor: Person, // 设置constructor
+  name: 'zhangsan',
+  age: 20,
+  job: 'software engineer',
+  sayName: function() {
+    alert(this.name);
+  }
+}
+
+person.sayName(); //error
+```
+![](../../imgs/js/js_prototype_1.png)
+
+#### 原生对象的原型
+
+原型模式的重要性不仅体现在创建自定义类型方面，就连所有原生的引用类型，都是采用这种模式创建的。所有的原生引用类型（Object、Array、String等）都在其构造函数的原型上定义了方法。
+
+> 不推荐在产品化的过程中修改原生对象的原型。如果因某个实现中缺少某个方法，就在原生对象的原型中添加这个方法，那么当在另外一支持该方法的实现的实现中运行代码时，就可能会导致命名冲突。
+
+#### 原型对象的问题
+原型模式省略了为构造函数传递初始化参数这一环节，使得多有实例在默认情况下都取得相同的属性值。这会在某种程度上带来一些不方便。最大的问题是由其共享的本性所导致的。
+
+### 组合使用构造函数模式和原型模式
+创建自定义类型的常见方式，就是组合使用构造函数模式和原型模式。构造函数模式用于定义实例属性，而原型模式用于定义方法和共享属性。
+```
+function Person(name, age, job) {
+  this.name = name;
+  this.age = age;
+  this.job = job;
+  this.friends = ['zhangsan', 'lisi'];
+}
+Person.prototype = {
+  constructor: Person,
+  sayName: function() {
+    alert(this.name);
+  }
+}
+var person1 = new Person('wangwu', 33, 'free');
+var person2 = new Person('zhaoli', 21, 'coder');
+person1.frends.push('zhuqi');
+```
+
+### 动态原型模式
+动态原型模式把所有的信息都封装在了构造函数中，而通过在构造函数中初始化原型。有保持了同时使用构造函数和原型的优点。也就是说，可以通过检查某个应该存放在的方法是否有效。**使用动态原型模式不能使用对象字面量重写原型。***来决定是否需要初始化原型：
+```
+function person(name, age, job) {
+  this.name = name;
+  this.age = age;
+  this.job = job;
+  if(typeof this.sayName != 'function') {
+    Person.prototype.sayName = function() {
+      alert(this.name);
+    }
+  }
+}
+```
+
+### 寄生构造函数模式
+基本思想是创建一个函数，该函数的作用仅仅是封装穿件对象的代码，然后再返回新创建的对象。表面上看，很像经典的构造函数
+```
+function Person(name, age, job) {
+  var o = new Object();
+  o.name = name;
+  o.age = age;
+  o.job = job;
+  o.sayName = function() {
+    alert(this.name);
+  }
+  return o;
+}
+var person1 = new Person('zhangsan', 20, 'engineer');
+person1.sayName();
+
+// 这个模式可以在特殊的情况下用来为对象创建构造函数
+function SpecialArray() {
+  var values = new Array();
+  values.push.apply(values, arguments);
+  values.toPipedString = function() {
+    return this.join('|');
+  };
+  return values;
+}
+var colors = new SpecialArray('red', 'blue', 'yellow');
+alert(colors.toPipedString());
+```
+### 稳妥构造函数模式
+稳妥对象是指没有公共属性。而其方法也不应用this的对象。最适合在一些安全的环境中（禁止使用this和new），或者防止数据被其他应用程序改动时使用。 有两个特定： 一是创建新对象的实例不引用this。二是不使用new操作符调用构造函数。
+```
+function Person(name, age, job) {
+  var o = new Object();
+  o.sayName = function() {
+    alert(name);
+  }
+  return o;
+}
+var person1 = Person('zhangsan', 20, 'engineer');
+person1.sayName();
 ```
