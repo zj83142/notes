@@ -170,10 +170,19 @@ o.sayName(); // wangwu
 
 2. 构造函数的问题
 
-
-
-
-
+构造函数的主要问题在于，每个方法都要在每个实例上重新创建一遍。
+```
+function Person(name, age, job) {
+  this.name = name;
+  this.age = age;
+  this.job = job;
+  this.sayName = sayName;
+}
+function sayName() {
+  alert(this.name);
+}
+```
+把sayName定义到构造函数外部，实现构造函数实例化对象共享同一个sayName(),但是这样做就没有封装可言了。
 
 ### 原型模式
 每个函数都有一个prototype属性，这个属性是一个指针，指向一个对象，而这个对象的用途是包含可以有特定类型的所有实例共享的属性和方法，那么prototype就是通过调用构造函数而创建的那个对象向实例的原型对象。
