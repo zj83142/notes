@@ -24,5 +24,8 @@
 ### 好的学习链接
 - [前端开发者指南（2017）](https://www.gitbook.com/book/sqrtthree/front-end-handbook-2017/details)
 - [js函数式编程指南](https://www.gitbook.com/book/llh911001/mostly-adequate-guide-chinese/details)
+- [创造狮导航-很全，有时间好好看看](http://chuangzaoshi.com/) ~ [图库](http://chuangzaoshi.com/icon/)
+- [貌似很牛的博客-那个前端导航很厉害的样子](https://luuman.github.io)
+
 
 I have a dream, to be a strongman someday.

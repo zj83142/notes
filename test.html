@@ -2,46 +2,24 @@
 <html>
 <head>
   <title></title>
-</head>
-<body onload="load()">
-<button>1</button>
-<button>2</button>
-<button>3</button>
-<button>4</button>
-<button>5</button>
-<script type="text/javascript">
-  
-  function load(){
-    var arr = document.getElementsByTagName("button");
-    for(var i = 0; i < arr.length; i++){
-      arr[i].onclick = (function (index) {
-        return function () {
-            alert('第' + (index + 1) + '个按钮');
-        }
-      })(i);
+
+  <style type="text/css">
+    .header {
+      display: flex;
     }
-  };
+    .header .title{
 
-  // function load(){
-  //   var arr = document.getElementsByTagName("button");
-  //   for(let i = 0; i < arr.length; i++){
-  //     arr[i].onclick = function () {
-  //       alert('第' + (i + 1) + '个按钮');
-  //     };
-  //   }
-  // };
+    }
+    .header .sign-in{
+      margin-left: auto;
+    }
 
-var value = 1;
-function bar() {
-  var value = 2;
-  function foo() {
-    console.log(value);
-  }
-  foo();
-}
-bar();
-
-
-</script>
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="title">冰冻三尺非一日之寒</div>
+    <div class="sign-in">注册</div>
+  </div>
 </body>
 </html>
