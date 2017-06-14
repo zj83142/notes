@@ -26,14 +26,14 @@ var instance = new SubType();
 alert(instance.getSuperValue()); // true
 
 ```
-!()[../../imgs/js/js_prototype_2.png]
+![](../../imgs/js/js_prototype_2.png)
 
 通过是i按原型链，本质上扩展了原型搜索机制。 当读取模式访问一个实例属性时，首先会在实例中搜索该属性，如果没有找到，则会继续搜索实例的原型。在通过原型链实现继承的情况下，搜索过程就得以沿着原型链继续向上。就拿例子来说： 调用instance.getSupervalue()会经历三个搜索步骤： 1. 搜索实例。2. 搜索SubType.prototype。3. 搜索SuperType.prototype。
 
 #### 1. 别忘记默认的原型
 所有的引用类型默认都继承了Object。 一定要记住，所有函数的默认原型都是Object的实例。因此默认原型都会包含一个内部指针，指向Object。prototype。
 
-!()[../../imgs/js/js_prototype_2.png]
+![](../../imgs/js/js_prototype_3.png)
 
 #### 2. 确定原型和实例的关系
 可以通过两个方法来确定原型和函数之间的关系。
@@ -260,4 +260,5 @@ SubType.prototype.sayAge = function() {
   alert(this.age);
 }
 ```
-!()[../../imgs/js/js_prototype_4.png]
+
+![](../../imgs/js/js_prototype_4.png)
