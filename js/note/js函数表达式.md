@@ -95,7 +95,7 @@ var factorial = (function f(num) {
 ```
 function createComparisonFunction(propertyName) {
   return function(object1, object2) {
-    var value1 = object1[propertyName];
+    var value1 = object1[propertyName]; // 之所以能访问到propertyName 是因为内部函数的作用域链中包含了外部函数的作用域。
     var value2 = object2[propertyName];
     if(value1 < value2) {
       return - 1; 
@@ -107,3 +107,23 @@ function createComparisonFunction(propertyName) {
   };
 }
 ```
+**当某个函数被调用时，会创建一个执行环境（execution context）以及相应的作用域链。然后使用arguments和其他命名参数的值来初始化函数的活动对象（activation object）。但在作用域链中，外部函数的活动对象始终处于第二位，外部函数的外部函数处于第三位，直到作为作用域链重点的全局执行环境**
+
+在函数执行过程中，为读取和写入变量的值，就需要在作用域链中查找变量。
+```
+function compare(value1, value2) {
+  if(value1 < value2) {
+    return -1;
+  } else if(value1 > value2) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+var result = compare(5, 10);
+
+```
+![](../../imgs/js/js_function_1.jpg)
+
+后台的每个执行环境都有一个表示变量的对象——变量对象。全局环境的变量对象始终存在，而像compare()函数这样的局部环境的变量对象，则只在函数执行的过程中存在。在创建compare()函数时，会创建一个预先包含全局变量对象的作用域链。这个作用域链被保存在内部的[[Scope]]属性中。当调用compare()函数时，会为函数创建一个执行环境，然后通过复制函数的[[Scope]]属性中的对象构建起执行环境的作用域链。此后，又有一个活动对象，被创建并被推入执行环境作用域链的前端。对于这个例子中的compare() 函数的执行环境而言，其作用域链中包含两个变量对象：本地活动对象和全局变量对象。显然，作用域链本质上是一个指向变量对象的指针列表，它只引用，但不实际包含变量对象。
+无论什么时候在函数中访问一个变量是，就会从作用域链中搜索具有相对名字的变量，一般来讲，当函数执行完毕后，局部活动对象就会被销毁。内存中仅保存全局作用域，但是，闭包的情况又有所不同。
