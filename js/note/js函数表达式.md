@@ -147,3 +147,43 @@ function createFunctions() {
   return result;
 }
 ```
+因为每个函数的作用域链中都保存着createFunctions() 函数的活动对象，所以他们引用的都是同一个变量i。
+```
+function createFunctions() {
+  var result = new Array();
+  for(var i = 0; i < 10; i++) {
+    result[i] = function(num) {
+      return function() {
+        return num;
+      };
+    }(i); 
+  }
+  return result;
+}
+```
+定义了一个匿名函数，并将立即执行该匿名函数的结果赋值给数组。
+
+### 关于this对象
+在闭包中使用this对象也可能会导致一些问题。this对象是在运行时基于函数的执行环境绑定的：在全局函数中，this等于window，而当函数被作为某个对象的方法调用时，this等于那个对象，不过**匿名函数的执行环境具有全局性**， 因此其this通常指向window。但是有时候由于编写闭包的方式不同，这一点儿可能不会那么明显。
+```
+var name = "the window";
+var object = {
+  name: "my object",
+  getNameFunc : function() {
+    return function() {
+      return this.name;
+    }
+  }
+};
+alert(object.getnameFunc()()); // the window (在非严格模式下)
+```
+
+### 模仿块级作用域
+javascript没有块级作用域的概念，这意味着块语句中定义的变量，实际上是包含函数
+```
+function outputNumbers(count) {
+  for(var i = 0; i < count; i++) {
+
+  }
+}
+```
