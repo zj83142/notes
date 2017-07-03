@@ -172,10 +172,29 @@ var object = {
   getNameFunc : function() {
     return function() {
       return this.name;
-    }
+    };
   }
 };
 alert(object.getnameFunc()()); // the window (在非严格模式下)
+```
+以上代码先创建了一个全局变量name，又创建了一个包含name属性的对象，这个对象还包含一个方法——getNameFunc(), 它返回一个匿名函数，而匿名函数有返回this.name。由于getNameFunc()返回一个函数，因此在调用object.getNameFunc()() 就会立即调用他返回的函数，结果就是返回一个字符串，然而，这个例子返回的字符串是the window。 即全局name变量的值。
+
+这是为什么呢？
+
+每个函数在被调用时都会自动取得两个特殊变量： this 和 arguments。 内部函数在搜索这个变量时，智慧搜索到其活动对象为止，因此用于不可能直接访问外部函数中的这两个变量，不过，把外部作用域中的this对象保存在一个闭包能访问到的变量里，就可以让闭包访问该对象了。
+
+```
+var name = "the window";
+var object = {
+  name: 'my object',
+  getNameFunc: function() {
+    var that = this;
+    return function() {
+      return that.name;
+    };
+  }
+};
+alert(object.getNameFunc()()); // my object
 ```
 
 ### 模仿块级作用域
@@ -185,8 +204,12 @@ function outputNumbers(count) {
   for(var i = 0; i < count; i++) {
     alert(i);
   }
+<<<<<<< HEAD
   var i; // 重新声明变量, 这里的声明并不影响后面的i
   alert(i); // 如果count = 10， 此处的i=10
+=======
+  alert(i); // 计数
+>>>>>>> a398f383a5956253a7571ae02498f09f8da85851
 }
 ```
 
