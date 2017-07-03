@@ -198,12 +198,24 @@ alert(object.getNameFunc()()); // my object
 ```
 
 ### 模仿块级作用域
-javascript没有块级作用域的概念，这意味着块语句中定义的变量，实际上是包含函数
+javascript没有块级作用域的概念，这意味着块语句中定义的变量，实际上是在包含函数中而非语句中创建的。
 ```
 function outputNumbers(count) {
   for(var i = 0; i < count; i++) {
     alert(i);
   }
+<<<<<<< HEAD
+  var i; // 重新声明变量, 这里的声明并不影响后面的i
+  alert(i); // 如果count = 10， 此处的i=10
+=======
   alert(i); // 计数
+>>>>>>> a398f383a5956253a7571ae02498f09f8da85851
 }
+```
+
+用作跨级作用域（通常称为私有作用域）的函数的语法：
+```
+(function() {
+  // 这块
+})();
 ```
