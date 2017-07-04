@@ -23,6 +23,8 @@
 - [js面向对象 - 继承](./js/note/js面向对象-继承.md)
 - [js函数表达式](./js/note/js函数表达式.md)
 
+- [js BOM](./js/note/BOM.md)
+
 ### 好的学习链接
 - [前端开发者指南（2017）](https://www.gitbook.com/book/sqrtthree/front-end-handbook-2017/details)
 - [js函数式编程指南](https://www.gitbook.com/book/llh911001/mostly-adequate-guide-chinese/details)
