@@ -6,9 +6,9 @@
 - [Markdown-语法手册](http://blog.leanote.com/post/freewalk/Markdown-%E8%AF%AD%E6%B3%95%E6%89%8B%E5%86%8C)
 
 ### 踩坑
-- [echarts 使用过程遇到的一些问题](./pits/echarts遇到的一些坑.md)
+- [echarts 使用过程遇到的问题](./pits/echarts遇到的一些坑.md)
 - [js 事件触发器 - 实现点击下载文本](./pits/js事件触发器点击下载文本.md)
-
+- [python安装类库问题](./pits/python安装类库问题.md)
 
 ### js知识点汇总
 - [js作用域](./js/js作用域.md)

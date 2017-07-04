@@ -264,4 +264,74 @@ function outputNumbers(count) {
   }
 })();
 ```
+这种做法可以减少闭包占用的内存问题，因为没有指向匿名函数的引用。只要函数执行完毕，就可以立即销毁器作用域链了。
 
+### 私有变量
+
+严格意义上讲，javascript中没有私有成员的概念，所有的对象属性都是公有的。不过，有私有变量的概念。任何函数中定义的变量，都可以认为是私有的，因为不能在函数外部访问这些变量。**私有变量包括函数的参数、局部变量和在函数内部定义的其他函数**
+
+```
+function add(num1, num2) {
+  var sum = num1 + num2;
+  return sum;
+}
+```
+
+如果在函数内部创建一个闭包，那么闭包通过自己的作用域链可以访问函数内部的变量，利用这点儿，我们可以创建用于访问私有变量的共有方法。我们把有权访问私有变量和私有函数的方法成为 **特权方法(privileged method)**， 创建方法如下：
+
+**在函数中定义特权方法。 **
+  ```
+  function MyObject() {
+    // 私有变量和私有函数
+    var privateVariable = 10;
+    function privateFunction() {
+      return false;
+    }
+    // 特权方法
+    this.publicMethod = function() {
+      privateVariable ++;
+      return privateFunction();
+    };
+  }
+  ```
+  对这个例子而言，变量 privateVariable 和函数 privateFunction() 只能通过特权方法publicMethod() 来访问。在创建MyObject的失利后，除了使用publicMethod() 这个途径外，没有任何方法可以直接访问privateVariableprivateFunction()
+
+  **利用私有和特权成员，可以隐藏哪些不应该被直接修改的数据**， 如：
+  ```
+  function Person(name) {
+    this.getName = function() {
+      return name;
+    };
+    this.setName = function(value) {
+      name = value;
+    };
+  }
+  var person = new Person('张三')；
+  alert(person.getName()); // 张三
+  person.setName('李四');
+  alert(person.getName()); // 李四
+  ```
+  以上例子，getName() 和 setName() 都是特权方法，都可以构造函数外使用，而且都有权利访问私有变量name。但是在Person构造函数外部，没有任何方法访问name。由于这两个方法都是在构造函数内部定义的，他们作为比包能够通过作用域链访问name。私有变量name在Person的每个实例中都有不同，因为每次调用函数都会创建这两个方法。
+
+> 构造函数模式的缺点是针对每个实例都会创建同样一组新方法，而是用静态私有变量来实现特权方法就可以避免这个问题
+
+#### 静态私有变量
+
+** 通过在私有作用域中定义变量或函数，同样可以创建特权方法。**
+
+  ```
+  (function() {
+    // 私有变量和私有函数
+    var privateVariable = 10;
+    function privateFunction() {
+      return false;
+    }
+    // 构造函数
+    MyObject = function() {};
+    // 公有特权函数
+    MyObject.prototype.publicMethod = function() {
+      privateVariable ++;
+      return privateFunction();
+    };
+  })();
+  ```
