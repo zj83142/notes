@@ -327,7 +327,7 @@ function add(num1, num2) {
       return false;
     }
     // 构造函数
-    MyObject = function() {};
+    MyObject = function() {};  // 这个地方没有用var，是一个全局变量，可以在私有作用域外被访问到。在严格模式下未经生命的变量复制会导致错误。
     // 公有特权函数
     MyObject.prototype.publicMethod = function() {
       privateVariable ++;
@@ -335,3 +335,161 @@ function add(num1, num2) {
     };
   })();
   ```
+  这个模式与在构造函数中定义特权方法的主要区别在于，私有变量和函数是有实例共享的。由于特权方法是在原型上定义的，因此所有实例都有这个函数，而这个特权方法，作为一个闭包，总是保存着对包含作用域的引用。
+  ```
+  (function() {
+    var name = "";
+    Person = function(value) {
+      name = value;
+    };
+    Person.prototype.getName = function() {
+      return name;
+    };
+    Person.prototype.setName = function(value) {
+      name = value;
+    }
+  })();
+
+  var person1 = new Person("张三");
+  alert(person1.getName()); // 张三
+  person1.setName('李四');
+  alert(person1.getName()); // 李四
+  var person2 = new Person("王五");
+  alert(person1.getName()); // 王五
+  alert(person2.getName()); // 王五
+  ```
+  变量name是一个静态的由所有实例共享的属性。也就是说，在一个实例上调用setName(), 就会影响所有的实例。以这种方式创建静态私有变量会因为是永远醒而增进代码复用，但是每个实例都没有自己的私有变量。所以到底使用实例变量还是静态私有变量，最终还是要根据需求而定。
+
+> 多查找作用域链中的一个层次，就会在一定程度上影响查找速度。而这正是使用闭包和私有变量的一个明显不足之处。
+
+#### 模块模式
+
+模块模式是为单例创建私有变量和特权方法，所谓单例，指的就是只有一个实例的对象。按照惯例，javascript是以对象字面量方式来创建单例对象。
+```
+var singleton = {
+  name: value,
+  method: function() {
+    // todo ...
+  }
+};
+
+```
+模块模式通过为单例添加私有变量和特权方法能够使其得到增强，其语法形式如下：
+```
+var singleton = function() {
+  // 私有变量和私有函数
+  var privateVariable = 10;
+  function privateFunction() {
+    return false;
+  }
+  // 公有特权函数
+  return {
+    publicProperty: true,
+    publicMethod: function() {
+      privateVariable ++;
+      return privateFunction();
+    }
+  };
+}();
+```
+将对象字面量作为函数的返回值。从本质上来讲，这个对象字面量定义的是单例的公共接口，这种模式需要对单例进行某些初始化，同时又在需要维护其私有变量时非常有用。如：
+```
+var application = function(){
+  //私有变量和函数
+  var components = new Array();
+
+  // 初始化
+  components.push(new BaseComponent());
+  return {
+    getComponentCount: function() {
+      return components.length;
+    },
+    registerComponent: function(component) {
+      if(typeof component == 'object') {
+        components.push(component);
+      }
+    }
+  };
+}();
+```
+上面例子，创建了一个用于管理组件的application对象，在创建这个对象的过程中，先声明一个私有的components数组，并向数组中添加了一个BaseComponent的新实例(这里不必关系BaseComponent的代码，他只是用来展示初始化操作)。返回对象的两个方法。
+
+
+#### 增强的模块模式
+
+适用于哪些单例必须是某种类型的实例，同事还必须添加某些属性和方法对其加以增强的情况。如：
+```
+var singleton = function() {
+  // 私有变量和私有函数
+  var privateVariable = 10;
+  function privateFunction() {
+    return false;
+  }
+  // 创建对象
+  var object = new CustomeType();
+
+  object.publicMethod = function() {
+    privateVariable ++;
+    return privateFunction();
+  };
+
+  //返回这个对象
+  return object;
+}();
+```
+如果演示模块模式的代码是前面例子中的application对象必须是BaseComponent的实例，那么可以如下：
+```
+var application = function(){
+  //私有变量和函数
+  var components = new Array();
+
+  // 初始化
+  components.push(new BaseComponent());
+
+  // 创建 application 的一个局部副本
+  var app = new BaseComponent();
+  // 公共接口
+  app.getComponentCount = function() {
+    return components.length;
+  };
+  app.registerComponent = function() {
+    if(typeof component == 'object') {
+      components.push(component);
+    }
+  };
+  // 返回这个副本
+  return app;
+}();
+```
+
+### 总结
+
+在javascript中，函数表达式市一中非常有用的技术。函数表达式可以无需对函数命名从而实现动态编程。匿名函数也称为拉姆达函数，是一种使用javascript函数的强大方式。
+
+总结函数表达式的特点：
+
+- 函数表达式不同于函数声明。函数声明要求有名字。没有名字的函数表达式也叫匿名函数
+- 在无法确定如何引用函数的情况下，递归函数就会变得比较复杂
+- 递归函数应该始终使用arguments.callee来递归调用自身，不要使用函数名。
+
+在函数内部定义了其他函数时，就创建了闭包，闭包有权限访问内部的所有变量，原理如下：
+
+- 在后台执行环境中，必报的作用域链包含着他自己的作用域，包含函数的作用域和全局作用域。
+- 通常，函数的作用域及其所有变量都会在函数执行结束后被销毁。
+- 但是，当函数返回了一个比包是，这个函数的作用域将会一直在内存中保存到闭包不存在未知。
+
+使用闭包可以在javascript中模仿块级元素。
+
+- 创建并立即调用一个函数，这样既可以执行其中的代码，又不会在内存中留下对该函数的应用
+- 结果就是函数内部的所有变量都会被立即销毁 —— 除非讲某些变量废纸给了包含作用域中的变量。
+
+闭包还可以用于在对象中创建私有变量。
+
+- 及时javascript中没有正式的私有对象属性的概念，但是可以使用闭包来轻松实现共有方法，而通过共有方法可以访问在包含作用域中定义的变量
+
+有方法可以访问在包含作用域中的变量。
+
+- 有权访问私有变量的公有方法叫做特权方法
+- 可以使用构造函数模式、原型模式来实现自定义的特权方法，也可以使用模块模式、增强的模块模式来实现单例的特权方法。
+
+javascript中的函数表达式和闭包都是及其有用的特性。利用他们可以实现很多功能，不过，因为创建闭包必须维护额外的作用域，所以过度使用它们可能会占用大量内存。
