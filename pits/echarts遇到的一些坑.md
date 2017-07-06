@@ -39,7 +39,11 @@ function getOption(x, y) {
       xAxis : [
           {
               type : 'time', // 非常重要，设置x轴类型是time. (类型有：value, category, time, log)
-              splitNumber:10
+              splitNumber:10,
+              axisLabel: {
+                  rotate: 30, // 标签旋转角度
+                  interval:0, // 默认auto（自动隐藏显示不下的） 0： 全部显示
+              }
           }
       ],
       yAxis : [

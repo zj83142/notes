@@ -5,6 +5,8 @@
 - [git 小技巧](./skills/git小技巧.md)
 - [Markdown-语法手册](http://blog.leanote.com/post/freewalk/Markdown-%E8%AF%AD%E6%B3%95%E6%89%8B%E5%86%8C)
 - [js书写小技巧](./skills/js小技巧.md)
+- [常用的正则表达式积累](./skills/常用的正则表达式积累.md)
+
 
 ### 踩坑
 - [echarts 使用过程遇到的问题](./pits/echarts遇到的一些坑.md)
@@ -25,6 +27,7 @@
 - [js函数表达式](./js/note/js函数表达式.md)
 - [BOM](./js/note/BOM.md)
 - [客户端检测](./js/note/客户端检测.md)
+- [DOM](./js/note/DOM.md)
 
 ### 好的学习链接
 - [前端开发者指南（2017）](https://www.gitbook.com/book/sqrtthree/front-end-handbook-2017/details)
