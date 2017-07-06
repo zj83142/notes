@@ -127,3 +127,14 @@ javascript通过Document类型表示文档。在浏览器中，document对象就
 - parentNode 的值为 null
 - ownerDocument 的值为 null
 - 其子节点可能是一个DocumentType(最多一个)、Element(最多一个)、ProcessingInstruction或Comment。
+
+Document类型可以表示HTML页面或者其他基于XML的文档。不过，最常见的应用还是作为HTMLDocument实例的document对象。通过这个额文档对象，不仅可以获取与月面相关的信息，而且还能操作页面的外观以及底层结构。
+
+> 在Firefox、Safari、Chrome 和 Opera中，可以通过脚本访问Document类型的构造函数和原型，但在所有的浏览器中，都可以访问HTMLDocument类型的构造函数和原型，包括IE8及后续版本。
+
+1. 文档的子节点
+  可以通过documentElement属性（更快、更直接的访问该元素），该属性始终指向HTML页面中的<html>元素。也通过childNodes列表访问文档元素。
+
+  document.body 在javascript代码中出现的拼非常高，所有的浏览器都支持document.documentElement 和 document.body 属性
+
+  Document另一个可能的子节点是DocumentType。通常将<!DOCTYPE> 看成一个与文档其它部分不同的实体，可以通过doctype属性（在浏览器中是document.doctype）来访问他的信息。浏览器对document.doctype属性的支持差别很大.
