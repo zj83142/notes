@@ -415,7 +415,72 @@ alert(element.getAttribute('align')); // left
 ### DOM 操作技术
 
 #### 动态脚本
-使用<script>元素可以向页面插入javascript代码，一种是通过src属性包含外部文件，另一种是用这个元素本身来包含代码。动态脚本，指的是在页面加载是不存在，但将来的某一时刻通过修改DOM动态添加的脚本。两种创建动态脚本的方式：
+使用script元素可以向页面插入javascript代码，一种是通过src属性包含外部文件，另一种是用这个元素本身来包含代码。动态脚本，指的是在页面加载是不存在，但将来的某一时刻通过修改DOM动态添加的脚本。两种创建动态脚本的方式：一，插入外部文件 二，插入javascript代码。
 
+#### 动态样式
+能够把CSS样式包含到HTML页面中的元素有两个: <link> 用于包含来自外部的文件，<style>用于指定嵌入的样式。与动态脚本类似，所谓动态样式是指在页面刚加载时不存在的样式，动态样式是在页面加载完成后添加到页面中的。
 
+使用DOM代码创建link
+```
+function loadStyles(url) {
+  var link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.href = url;
+  var head = document.getElementsByTageName('head')[0];
+  head.appendChild(link); // 必须将link 添加到head中而不是body中
+}
+loadStyles('style.css');
+```
 
+#### 操作表格
+table 元素是html 中最复杂的结构之一。要想创建表格，一般都必须设计表示表格行、单元格、表头等方面的标签。
+为了方便创建表格，HTML DOM 还为<table> <tbody> <tr> 元素添加了很多属性和方法。
+
+Table 对象集合
+
+集合 | 描述
+---------|----------
+cells[] | 返回包含表格中所有单元格的一个数组。
+rows[] | 返回包含表格中所有行的一个数组。
+tBodies[] | 返回包含表格中所有 tbody 的一个数组。
+
+Table 对象属性
+
+属性 | 描述
+---------|----------
+align | 表在文档中的水平对齐方式。（已废弃）
+bgColor | 表的背景颜色。（已废弃）
+border | 设置或返回表格边框的宽度。
+caption | 对表格的 <caption> 元素的引用。
+cellPadding | 设置或返回单元格内容和单元格边框之间的空白量。
+cellSpacing | 设置或返回在表格中的单元格之间的空白量。
+frame | 设置或返回表格的外部边框。
+id | 设置或返回表格的 id。
+rules | 设置或返回表格的内部边框（行线）。
+summary | 设置或返回对表格的描述（概述）。
+tFoot | 返回表格的 TFoot 对象。如果不存在该元素，则为 null。
+tHead | 返回表格的 THead 对象。如果不存在该元素，则为 null。
+width | 设置或返回表格的宽度。
+
+标准属性
+
+属性 | 描述
+---------|----------
+className | 设置或返回元素的 class 属性。
+dir | 设置或返回文本的方向。
+lang | 设置或返回元素的语言代码。
+title | 设置或返回元素的 title 属性。
+
+Table 对象方法
+
+方法  描述
+---------|----------
+createCaption() | 为表格创建一个 caption 元素。
+createTFoot() | 在表格中创建一个空的 tFoot 元素。
+createTHead() | 在表格中创建一个空的 tHead 元素。
+deleteCaption() | 从表格删除 caption 元素以及其内容。
+deleteRow() | 从表格删除一行。
+deleteTFoot() | 从表格删除 tFoot 元素及其内容。
+deleteTHead() | 从表格删除 tHead 元素及其内容。
+insertRow() | 在表格中插入一个新行。
