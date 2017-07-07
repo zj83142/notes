@@ -437,7 +437,7 @@ loadStyles('style.css');
 table 元素是html 中最复杂的结构之一。要想创建表格，一般都必须设计表示表格行、单元格、表头等方面的标签。
 为了方便创建表格，HTML DOM 还为<table> <tbody> <tr> 元素添加了很多属性和方法。
 
-Table 对象集合
+**Table 对象集合**
 
 集合 | 描述
 ---------|----------
@@ -445,7 +445,7 @@ cells[] | 返回包含表格中所有单元格的一个数组。
 rows[] | 返回包含表格中所有行的一个数组。
 tBodies[] | 返回包含表格中所有 tbody 的一个数组。
 
-Table 对象属性
+**Table 对象属性**
 
 属性 | 描述
 ---------|----------
@@ -463,7 +463,7 @@ tFoot | 返回表格的 TFoot 对象。如果不存在该元素，则为 null。
 tHead | 返回表格的 THead 对象。如果不存在该元素，则为 null。
 width | 设置或返回表格的宽度。
 
-标准属性
+**标准属性**
 
 属性 | 描述
 ---------|----------
@@ -472,9 +472,9 @@ dir | 设置或返回文本的方向。
 lang | 设置或返回元素的语言代码。
 title | 设置或返回元素的 title 属性。
 
-Table 对象方法
+**Table 对象方法**
 
-方法  描述
+方法 | 描述
 ---------|----------
 createCaption() | 为表格创建一个 caption 元素。
 createTFoot() | 在表格中创建一个空的 tFoot 元素。
@@ -484,3 +484,27 @@ deleteRow() | 从表格删除一行。
 deleteTFoot() | 从表格删除 tFoot 元素及其内容。
 deleteTHead() | 从表格删除 tHead 元素及其内容。
 insertRow() | 在表格中插入一个新行。
+
+#### 使用 NodeList
+理解 NodeList 以及 NamedNodeMap 和 HTMLCollection 是从整体上透彻理解DOM的关键所在。这三个集合都是动态的，换句话说，每当文档结构发生变化时。他们都会得到更新，因此，他们始终都会保存这最新、最准确的信息。从本质上说，所有的NodeList对象都是在访问DOM文档时实时运行的查询。例如下面代码会导致死循环：
+```
+var divs = document.getElementsByTagName('div');
+var i, div;
+for(i = 0; i < divs.length; i++) {
+  div = document.createElement('div');
+  document.body.appendChild(div);
+}
+```
+
+### 总结
+DOM 是语言中立的API，用于访问和操作HTML和CML文档。DOM1记讲HTML和CML文档信箱的看作一个层次化的节点数。可以使用javascript来操作这个节点树，从而改进底层文档的外观和结构。
+
+DOM有各种节点构成，总结如下：
+- 最基本的节点类型是Node，用于抽象的表示文档中一个独立的额部分。所有其他类型都继承自Node
+- Document 类型表示整个文档，是一组分层节点的根节点。在javascript中，document对象是Document的一个实例对象。使用document对象，有很多种方式可以查询和获取节点
+- Element节点表示文档中的所有HTML和XML元素，可以用来操作这些元素的内容和特性
+- 另外还有一些节点类型，分别表示文本内容、注释、文档类型、CDATA区域 和 文档片段。
+
+访问DOM的操作在很多情况下都很直观，不过在处理script和style元素是还是存在一些复杂性。由于这两个元素分别包含脚本和样式信息。因此浏览器通常会将它们与其他元素区别对待。
+
+理解DOM的关键就是理解DOM对性能的影响。DOM操作往往是javascript程序中开销最大的部分，而因访问NodeList导致的问题最多。NodeList对象都是通天的，这就意味着每次访问NodeList对象。都会运行一次查询，因此最好的办法就是尽量减少DOM操作。
