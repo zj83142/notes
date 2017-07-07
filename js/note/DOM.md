@@ -170,11 +170,11 @@ Document类型可以表示HTML页面或者其他基于XML的文档。不过，�
 
 4. 特殊集合
   除了属性和方法，document对象还有一些特殊的集合，这些集合都是HTMLDocument对象，为了访问文档常用的部分提供了快捷方式，包括：
-  - document.anchors 包含文档中所有带name特性的<a>元素
-  - document.applets 包含文档中所有带有<applet>元素，因为不再推荐使用<applet>元素，所以这个集合也不建议使用了
-  - document.forms 包含文档中所有的<form>元素
-  - document.images 包含文档中所有的<img>元素
-  - document.links 包含文档中所有带href属性的<a>元素
+  - document.anchors 包含文档中所有带name特性的 a 元素
+  - document.applets 包含文档中所有带有 applet 元素，因为不再推荐使用 applet 元素，所以这个集合也不建议使用了
+  - document.forms 包含文档中所有的 form 元素
+  - document.images 包含文档中所有的 img 元素
+  - document.links 包含文档中所有带href属性的 a 元素
 
 5. DOM一致性检测
   document.implementation 属性用来检测浏览器实现了DOM的哪些部分。
