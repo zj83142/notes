@@ -1,6 +1,8 @@
 ## 学习笔记
 
 - **[日常笔记](./diary/index.md)**
+- **[CSS效果积累](./css-effects/index.md)**
+
 
 - [git 小技巧](./skills/git小技巧.md)
 - [Markdown-语法手册](http://blog.leanote.com/post/freewalk/Markdown-%E8%AF%AD%E6%B3%95%E6%89%8B%E5%86%8C)
