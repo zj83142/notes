@@ -138,6 +138,8 @@ btn.onclick = null; // 删除事件处理程序
 
 #### DOM2 级事件处理程序
 
+"DOM2 级事件"定义了两个方法：addEventListener() 和 removeEventListener() 用于处理指定和删除事件处理程序。
+
 #### IE事件处理程序
 
 #### 跨浏览器的事件处理程序
