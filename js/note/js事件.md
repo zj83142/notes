@@ -138,7 +138,50 @@ btn.onclick = null; // 删除事件处理程序
 
 #### DOM2 级事件处理程序
 
-"DOM2 级事件"定义了两个方法：addEventListener() 和 removeEventListener() 用于处理指定和删除事件处理程序。
+"DOM2 级事件"定义了两个方法：addEventListener() 和 removeEventListener() 用于处理指定和删除事件处理程序。所有的节点都包含这两个方法，并且他们都接受3个参数：要处理的事件名、作为事件处理程序的函数和一个布尔值。布尔值如果是true，表示在捕获阶段调用事件处理程序，如果是false表示在冒泡阶段调用事件处理程序。
+
+要在按钮上为click事件添加事件处理程序，可以使用下面代码：
+```
+var btn = document.getElementById('myBtn');
+btn.addEventListener('click', function() {
+  alert(this.id);
+}, false);  // 该事件会在魔炮阶段被触发
+```
+使用DOM2 级方法田间事件处理程序的主要好处是可以添加多个事件处理程序。如：
+```
+var btn = document.getElementById('myBtn');
+btn.addEventListener('click', function() {
+  alert(this.id);
+}, false);
+btn.addEventListener('click', function() {
+  alert('haha!!!');
+}, false);
+```
+上面为按钮添加了两个事件处理程序，这两个事件处理程序会按照添加他们的顺序触发，因此首先显示元素ID，其次会显示haha!!!消息。
+
+通过addEventListener() 添加的事件处理程序只能用removeEventListener()来移除；移除时传入的参数与添加处理程序时使用的参数相同，这意味着通过addEventListener() 添加的匿名函数讲无法移除，如：
+```
+var btn = document.getElementById('myBtn');
+btn.addEventListener('click', function() {
+  alert(this.id);
+}, false);
+
+btn.removeEventListener('click', function() { // 无效
+  alert(this.id);
+}, false);
+```
+上面例子中，我们在使用addEventListener() 添加了一个事件处理程序。虽然调用removeEventListener() 时看似使用了相同的参数，但实际上，第二个参数与传入addEventListener()中的那个是完全不同的函数。确保传入的参数相同，如：
+```
+var btn = document.getElementById('myBtn');
+var hander = function() {
+  alert(this.id);
+}
+btn.addEventListener('click', hander, false);
+
+btn.removeEventListener('click', hander, false); // 有效
+```
+
+大多数情况下，都是讲事件处理程序添加到事件流的冒泡阶段，这样可以最大限度的兼容各种浏览器，最好只在需要在事件到达目标之前捕获它的时候将事件处理程序添加到捕获阶段，如果不是特别需要，不建议在事件捕获阶段注册时间处理程序。
 
 #### IE事件处理程序
 
