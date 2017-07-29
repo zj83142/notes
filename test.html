@@ -4,23 +4,54 @@
   <title></title>
 
   <style type="text/css">
-    .header {
-      display: flex;
+    body {
+        text-align: center;
     }
-    .header .title{
-
+    
+    ul {
+        background: gray;
+        width: 100%;
+        padding: 20px;
+        -webkit-perspective: 200;
     }
-    .header .sign-in{
-      margin-left: auto;
+    
+    li {
+        list-style: none;
+        height: 50px;
+        width: 100px;
+        padding: 0;
+        margin: 0;
+        display: inline-block;
+        background: white;
+        border-radius: 2px;
     }
-
+    
+    .anim {
+        animation: anim 1s infinite;
+        width: 100px;
+        margin-left: -100px;
+        background: white;
+    }
+    
+    @keyframes anim {
+        to {
+            transform: rotateY(-180deg);
+        }
+    }
+    
+    .anim2 {
+        width: 100px;
+        margin-left: -100px;
+        background: white
+    }
   </style>
 </head>
 <body>
-  <div class="header">
-    <div class="title">冰冻三尺非一日之寒</div>
-    <div class="sign-in">注册</div>
-  </div>
-    <input type="file" value="d:/uv.txt">
+  <ul>
+    <li></li>
+    <li class="anim"></li>
+    <li class="anim2"></li>
+  </ul>
 </body>
 </html>
+

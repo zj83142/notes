@@ -79,3 +79,15 @@ function getOption(x, y) {
     return option;
   }
 ```
+
+### - echart 柱状图显示数据 
+
+series 下添加
+```
+label: {
+    normal: {
+        show: true,
+        position: 'left' // 默认在柱状图上显示数据
+    }
+},
+```
