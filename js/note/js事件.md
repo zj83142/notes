@@ -181,15 +181,93 @@ btn.addEventListener('click', hander, false);
 btn.removeEventListener('click', hander, false); // 有效
 ```
 
-大多数情况下，都是讲事件处理程序添加到事件流的冒泡阶段，这样可以最大限度的兼容各种浏览器，最好只在需要在事件到达目标之前捕获它的时候将事件处理程序添加到捕获阶段，如果不是特别需要，不建议在事件捕获阶段注册时间处理程序。
+大多数情况下，都是将事件处理程序添加到事件流的冒泡阶段，这样可以最大限度的兼容各种浏览器，最好只在需要在事件到达目标之前捕获它的时候将事件处理程序添加到捕获阶段，如果不是特别需要，不建议在事件捕获阶段注册时间处理程序。
 
 #### IE事件处理程序
 
+IE 实现了与DOM中类似的两个方法：attachEvent() 和 detachEvent() 这两个方法接收相同的两个参数：事件处理程序名称与事件处理程序函数。由于IE8及更早的版本值支持事件冒泡，所以通过attachEvent() 添加的事件处理程序都会被添加到冒泡阶段。
+
+使用attachEvent() 为按钮添加一个事件处理程序，如下：
+```
+var btn = document.getElementById('myBtn');
+btn.attchEvent('onclick', function() {
+  alert('Clicked!!!');
+});
+```
+在IE中使用attachEvent() 与使用DOM0 级方法的主要区别在于事件处理程序的作用域。**在使用DOM0级方法的情况下，事件处理程序会在其所属元素的作用域内运行；在使用attachEvent() 方法的情况下，事件处理程序会在全局作用域中运行，因此this等于window。在编写跨浏览器的代码时，需要牢记这一区别**
+```
+var btn = document.getElementById('myBtn');
+btn.attachEvent('onclick', function() {
+  alert(this == window); // true
+});
+```
+
+使用attachEvent() 添加的事件可以通过detachEvent() 来移除，条件是必须提供相同的参数，与DOM方法一样，这也意味着添加的匿名函数将不能被移除，不过只要能够将对象相同函数的引用传递给detachEvent(),就可以移除相应的事件处理程序，如：
+```
+var btn = document.getElementById('myBtn');
+var handler = function() {
+  alert('Clicked!');
+};
+btn.attachEvent('onclick', handler);
+// 这里省略了其他代码
+btn.detachEvent('onclick', handler);
+```
+这个例子将保存在变量handler中的函数作为事件处理程序，因此后面的detachEvent() 可以使用相同的函数来移除事件处理程序。
+
+> 支持IE事件处理程序的浏览器有IE 和 Opera
+
 #### 跨浏览器的事件处理程序
+
+恰当的使用能力检测，保证处理事件的代码能在大多数浏览器下一致的运行，基本上只需关注冒泡阶段。
+
+第一个要创建的方法是addHandler(), 他的职责是视情况分别使用DOM0级方法、DOM2级方法或IE方法来添加事件，这个方法属于一个叫EventUtil的对象。addHandler接收三个参数：要操作的元素、事件名称 和 事件处理程序函数。与addHandler() 对应的方法是removeHandler() 用来移除之前添加的事件处理程序 —— 无论该事件是采用什么方式添加到元素中的。
+```
+var EventUtil = {
+  addHandler: function(element, type, handler) {
+    if(element.addEventListener) {
+      element.addEventListener(type, hander, false);
+    } else if(element.attachEvent) {
+      element.attachEvent('on' + type, handler);
+    } else {
+      element['on' + type] = handler;
+    }
+  },
+  removeHandler: function(element, type, handler) {
+    if(element.removeEventListener) {
+      element.removeEventListener(type, handler, false);
+    } else if(element.detachEvent) {
+      element.detachEvent('on' + type, handler);
+    } else {
+      element['on' + type] = null;
+    }
+  }
+};
+```
+这两个方法首先都会检测传入的元素是否窜在DOM2级方法，如果存在DOM2 级方法，则使用该方法：传入事件类型、事件处理程序函数和第三个参数false（表示）
 
 ### 事件对象
 
+在触发DOM上的某个事件时，会产生一个事件对象event，这个对象中包含着所有与事件有关的信息。包括导致事件的元素、事件的类型以及其他与特定事件相关的信息。例如，鼠标操作导致的事件对象中，会包含鼠标位置的信息，而键盘操作导致的事件对象中，会包含与按下的键有关的信息。所有浏览器都支持event对象，但支持的方式不同。
+
 #### DOM 中的事件对象
+
+兼容DOM的浏览器会将一个event对象传入到事件处理程序中。无论制定事件处理程序时使用什么方法（DOM0级或DOM2级），都会传入event对象。
+```
+var btn = document.getElementById('myBtn');
+btn.onclick = function(event) {
+  alert(event.type); // click
+};
+btn.addEventListener('click', function(event) {
+  alert(event.type); // click
+}, false);
+```
+这个例子中的两个事件处理程序都会弹出一个警告框，显示由event.type属性表示的事件类型。这个属性始终都会包含被触发的事件类型。例如'click'(与传入 addEventListener() 和 removeEventListener() 中的事件类型一致)
+
+在通过HTML特性制定事件处理程序时，变量event中保存着event对象。如：
+```
+<input type="button" value="Click Me" onclick="alert(event.type)" />
+```
+
 
 #### IE 中的事件对象
 
