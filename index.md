@@ -14,6 +14,7 @@
 - [echarts 使用过程遇到的问题](./pits/echarts遇到的一些坑.md)
 - [js 事件触发器 - 实现点击下载文本](./pits/js事件触发器点击下载文本.md)
 - [python安装类库问题](./pits/python安装类库问题.md)
+- [日常遇到的问题积累](./pits/日常遇到的问题.md)
 
 ### js知识点汇总
 - [js作用域](./js/js作用域.md)
