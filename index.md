@@ -32,6 +32,7 @@
 - [客户端检测](./js/note/客户端检测.md)
 - [DOM](./js/note/DOM.md)
 - [DOM 扩展](./js/note/DOM扩展.md)
+- [DOM2 和 DOM3](./js/note/DOM2和DOM3.md)
 
 ### 好的学习链接
 - [前端开发者指南（2017）](https://www.gitbook.com/book/sqrtthree/front-end-handbook-2017/details)
