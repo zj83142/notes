@@ -118,3 +118,15 @@
     // 简洁写法
     "myString"[0]; // 返回 'm'
   ```
+
+10. 比较两个日期大小
+  ```
+    function checkEndTime(startTime, endTime){  
+      var start = new Date(startTime.replace("-", "/").replace("-", "/"));  
+      var end=new Date(endTime.replace("-", "/").replace("-", "/"));  
+      if(end < start){  
+          return false;  
+      }  
+      return true;  
+    } 
+  ```
