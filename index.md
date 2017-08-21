@@ -7,6 +7,7 @@
 - [git 小技巧](./skills/git小技巧.md)
 - [Markdown-语法手册](http://blog.leanote.com/post/freewalk/Markdown-%E8%AF%AD%E6%B3%95%E6%89%8B%E5%86%8C)
 - [js书写小技巧](./skills/js小技巧.md)
+- [js编程黑科技](./skills/js编程黑科技.md)
 - [常用的正则表达式积累](./skills/常用的正则表达式积累.md)
 
 
