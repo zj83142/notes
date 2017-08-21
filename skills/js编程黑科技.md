@@ -244,6 +244,6 @@ function toHEX(rgb){
 
 [如何读懂并写出装逼的函数式代码](http://coolshell.cn/articles/17524.html)
 [作者博客, 有时间可以看看](https://github.com/jawil/blog)
-[小姐姐博客，很多干货](https://github.com/sunshine940326)
+[小姐姐git](https://github.com/sunshine940326) - [小姐姐博客](http://cherryblog.site/page/2/) 很多干货
 
 
